@@ -87,14 +87,16 @@ impl ZkService {
         vk.serialize_compressed(&mut vk_bytes)
             .map_err(|e| ZkError::SerializationError(e.to_string()))?;
 
-        let public_input_strings: Vec<String> = public_inputs
+        let public_input_strings: Result<Vec<String>, ZkError> = public_inputs
             .iter()
             .map(|f| {
                 let mut bytes = Vec::new();
-                f.serialize_compressed(&mut bytes).unwrap();
-                hex::encode(&bytes)
+                f.serialize_compressed(&mut bytes)
+                    .map_err(|e| ZkError::SerializationError(e.to_string()))?;
+                Ok(hex::encode(&bytes))
             })
             .collect();
+        let public_input_strings = public_input_strings?;
 
         Ok(ProofResult {
             proof_bytes,
