@@ -21,30 +21,24 @@ pub enum ZkError {
 impl ResponseError for ZkError {
     fn error_response(&self) -> HttpResponse {
         match self {
-            ZkError::InvalidInput(_) => {
-                HttpResponse::BadRequest().json(serde_json::json!({
-                    "error": self.to_string(),
-                    "code": "INVALID_INPUT"
-                }))
-            }
+            ZkError::InvalidInput(_) => HttpResponse::BadRequest().json(serde_json::json!({
+                "error": self.to_string(),
+                "code": "INVALID_INPUT"
+            })),
             ZkError::ProofGenerationFailed(_) => {
                 HttpResponse::InternalServerError().json(serde_json::json!({
                     "error": self.to_string(),
                     "code": "PROOF_GENERATION_FAILED"
                 }))
             }
-            ZkError::VerificationFailed(_) => {
-                HttpResponse::BadRequest().json(serde_json::json!({
-                    "error": self.to_string(),
-                    "code": "VERIFICATION_FAILED"
-                }))
-            }
-            _ => {
-                HttpResponse::InternalServerError().json(serde_json::json!({
-                    "error": self.to_string(),
-                    "code": "INTERNAL_ERROR"
-                }))
-            }
+            ZkError::VerificationFailed(_) => HttpResponse::BadRequest().json(serde_json::json!({
+                "error": self.to_string(),
+                "code": "VERIFICATION_FAILED"
+            })),
+            _ => HttpResponse::InternalServerError().json(serde_json::json!({
+                "error": self.to_string(),
+                "code": "INTERNAL_ERROR"
+            })),
         }
     }
 }

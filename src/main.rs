@@ -25,10 +25,7 @@ async fn main() -> std::io::Result<()> {
     info!("Initializing ZK middleware service...");
     let zk_service = Arc::new(ZkService::new());
 
-    let app_state = web::Data::new(AppState {
-        zk_service,
-        config,
-    });
+    let app_state = web::Data::new(AppState { zk_service, config });
 
     info!("Starting server on {}", bind_addr);
 
