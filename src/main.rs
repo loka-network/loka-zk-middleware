@@ -2,18 +2,9 @@ use actix_web::{web, App, HttpServer};
 use log::info;
 use std::sync::Arc;
 
-mod api;
-mod config;
-mod errors;
-mod zk;
-
-use config::AppConfig;
-use zk::ZkService;
-
-pub struct AppState {
-    pub zk_service: Arc<ZkService>,
-    pub config: AppConfig,
-}
+use loka_zk_middleware::config::AppConfig;
+use loka_zk_middleware::zk::ZkService;
+use loka_zk_middleware::{api, AppState};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
