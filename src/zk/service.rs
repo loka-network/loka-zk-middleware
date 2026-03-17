@@ -71,7 +71,9 @@ impl ZkService {
     ) -> Result<ProofResult, ZkError> {
         let mut rng = thread_rng();
 
-        // Trusted setup (in production, this would use a ceremony)
+        // WARNING: Per-request trusted setup is for development/demo only.
+        // In production, use ceremony-generated parameters (e.g., Perpetual Powers of Tau)
+        // and load pre-computed proving/verification keys.
         let (pk, vk) = Groth16::<Bn254>::circuit_specific_setup(setup_circuit, &mut rng)
             .map_err(|e| ZkError::ProofGenerationFailed(e.to_string()))?;
 

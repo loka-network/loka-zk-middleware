@@ -23,12 +23,13 @@ pub async fn generate_square_proof(
     data: web::Data<AppState>,
     req: web::Json<SquareProofRequest>,
 ) -> Result<HttpResponse, ZkError> {
-    info!("Generating square proof");
+    let proof_id = Uuid::new_v4().to_string();
+    info!("Generating square proof, proof_id={}", proof_id);
 
     let result = data.zk_service.generate_square_proof(req.secret)?;
 
     let response = ProofResponse {
-        proof_id: Uuid::new_v4().to_string(),
+        proof_id,
         proof: hex::encode(&result.proof_bytes),
         verification_key: hex::encode(&result.vk_bytes),
         public_inputs: result.public_inputs,
@@ -44,12 +45,13 @@ pub async fn generate_sum_proof(
     data: web::Data<AppState>,
     req: web::Json<SumProofRequest>,
 ) -> Result<HttpResponse, ZkError> {
-    info!("Generating sum proof");
+    let proof_id = Uuid::new_v4().to_string();
+    info!("Generating sum proof, proof_id={}", proof_id);
 
     let result = data.zk_service.generate_sum_proof(req.a, req.b)?;
 
     let response = ProofResponse {
-        proof_id: Uuid::new_v4().to_string(),
+        proof_id,
         proof: hex::encode(&result.proof_bytes),
         verification_key: hex::encode(&result.vk_bytes),
         public_inputs: result.public_inputs,
