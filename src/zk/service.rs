@@ -121,10 +121,8 @@ impl ZkService {
 
         let vk_bytes = hex::decode(vk_hex)
             .map_err(|e| ZkError::InvalidInput(format!("Invalid vk hex: {}", e)))?;
-        let vk = <Groth16<Bn254> as SNARK<Fr>>::VerifyingKey::deserialize_compressed(
-            &vk_bytes[..],
-        )
-        .map_err(|e| ZkError::InvalidInput(format!("Invalid vk format: {}", e)))?;
+        let vk = <Groth16<Bn254> as SNARK<Fr>>::VerifyingKey::deserialize_compressed(&vk_bytes[..])
+            .map_err(|e| ZkError::InvalidInput(format!("Invalid vk format: {}", e)))?;
 
         let mut public_inputs = Vec::new();
         for input_hex in public_inputs_hex {

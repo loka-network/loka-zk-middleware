@@ -69,9 +69,9 @@ pub async fn verify_proof(
 ) -> Result<HttpResponse, ZkError> {
     info!("Verifying proof");
 
-    let valid = data
-        .zk_service
-        .verify_proof(&req.proof, &req.verification_key, &req.public_inputs)?;
+    let valid =
+        data.zk_service
+            .verify_proof(&req.proof, &req.verification_key, &req.public_inputs)?;
 
     let response = VerifyResponse {
         valid,

@@ -2,18 +2,9 @@ use actix_web::{web, App, HttpServer};
 use log::info;
 use std::sync::Arc;
 
-mod api;
-mod config;
-mod errors;
-mod zk;
-
-use config::AppConfig;
-use zk::ZkService;
-
-pub struct AppState {
-    pub zk_service: Arc<ZkService>,
-    pub config: AppConfig,
-}
+use loka_zk_middleware::config::AppConfig;
+use loka_zk_middleware::zk::ZkService;
+use loka_zk_middleware::{api, AppState};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -25,10 +16,7 @@ async fn main() -> std::io::Result<()> {
     info!("Initializing ZK middleware service...");
     let zk_service = Arc::new(ZkService::new());
 
-    let app_state = web::Data::new(AppState {
-        zk_service,
-        config,
-    });
+    let app_state = web::Data::new(AppState { zk_service, config });
 
     info!("Starting server on {}", bind_addr);
 

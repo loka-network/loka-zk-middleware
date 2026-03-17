@@ -20,13 +20,9 @@ pub struct SquareCircuit<F: Field> {
 
 impl<F: Field> ConstraintSynthesizer<F> for SquareCircuit<F> {
     fn generate_constraints(self, cs: ConstraintSystemRef<F>) -> Result<(), SynthesisError> {
-        let x = cs.new_witness_variable(|| {
-            self.x.ok_or(SynthesisError::AssignmentMissing)
-        })?;
+        let x = cs.new_witness_variable(|| self.x.ok_or(SynthesisError::AssignmentMissing))?;
 
-        let y = cs.new_input_variable(|| {
-            self.y.ok_or(SynthesisError::AssignmentMissing)
-        })?;
+        let y = cs.new_input_variable(|| self.y.ok_or(SynthesisError::AssignmentMissing))?;
 
         // Enforce: x * x = y
         cs.enforce_constraint(lc!() + x, lc!() + x, lc!() + y)?;
@@ -52,24 +48,14 @@ pub struct SumCircuit<F: Field> {
 
 impl<F: Field> ConstraintSynthesizer<F> for SumCircuit<F> {
     fn generate_constraints(self, cs: ConstraintSystemRef<F>) -> Result<(), SynthesisError> {
-        let a = cs.new_witness_variable(|| {
-            self.a.ok_or(SynthesisError::AssignmentMissing)
-        })?;
+        let a = cs.new_witness_variable(|| self.a.ok_or(SynthesisError::AssignmentMissing))?;
 
-        let b = cs.new_witness_variable(|| {
-            self.b.ok_or(SynthesisError::AssignmentMissing)
-        })?;
+        let b = cs.new_witness_variable(|| self.b.ok_or(SynthesisError::AssignmentMissing))?;
 
-        let sum = cs.new_input_variable(|| {
-            self.sum.ok_or(SynthesisError::AssignmentMissing)
-        })?;
+        let sum = cs.new_input_variable(|| self.sum.ok_or(SynthesisError::AssignmentMissing))?;
 
         // Enforce: (a + b) * 1 = sum
-        cs.enforce_constraint(
-            lc!() + a + b,
-            lc!() + Variable::One,
-            lc!() + sum,
-        )?;
+        cs.enforce_constraint(lc!() + a + b, lc!() + Variable::One, lc!() + sum)?;
 
         Ok(())
     }
